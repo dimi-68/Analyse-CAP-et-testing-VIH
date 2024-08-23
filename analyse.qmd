@@ -8,9 +8,7 @@ author: Dimitry Yonta
 lang: fr
 ---
 
-
 #### Importation des packages et paramétrages
-
 
 ```{r}
 if (!require(pacman)) install.packages("pacman")
@@ -19,9 +17,7 @@ pacman::p_load(foreign, haven,tidyverse,survey,gtsummary,rio,here,flextable,jani
 theme_gtsummary_language( "fr", decimal.mark = ",", big.mark = " ")
 ```
 
-
 #### importations des bases de données
-
 
 ```{r}
 
@@ -31,11 +27,9 @@ base_femme <- read_sas('C:/Users/DELL/Desktop/Mes Projets_R/epidemioR/DHS SAS/CM
 
 ```
 
-
 ### [Partie 1:]{.underline} Nettoyage et organisation de la base de donnée
 
 #### Selection des variables
-
 
 ```{r}
 base_EDS_homme <- base_homme %>%
@@ -75,9 +69,7 @@ base_EDS_femme <- base_EDS_femme %>%
   ))
 ```
 
-
 #### Changement du nom des variables de la base des femmes identiques à celle des hommes et reorganisation des variables
-
 
 ```{r}
 # renommons les variables
@@ -268,9 +260,7 @@ basefr <- fusion %>%
 
 ```
 
-
 #### Analyse des valeurs manquantes
-
 
 ```{r}
 
@@ -284,20 +274,16 @@ graph_missing <- gg_miss_var(basefr,
 #graph_missing
 ```
 
-
 ![](Rplot01.png)
-
 
 ```{r}
 # Carte thermique de la complétude des données à l'échelle du dataframe
 #vis_miss(basefr,warn_large_data = FALSE)
 ```
 
-
 ![](Rplot02.png)
 
 #### Gestion des valeurs manquantes
-
 
 ```{r}
 basefr <- basefr %>% 
@@ -328,9 +314,7 @@ basefr <- basefr %>%
 
 ```
 
-
 #### Selection des individus de l'echantillon
-
 
 ```{r}
 base1<- basefr %>%
@@ -381,9 +365,7 @@ basefr <- basefr %>%
     MV858 == 8 ~ 0))
 ```
 
-
 #### Creation des scores
-
 
 ```{r}
 ##Creation du score des connaissances des moyens de prevention et de transmission
@@ -425,9 +407,7 @@ basefr$MV793B <- basefr$MV793B %>%
   )
 ```
 
-
 #### Partenaires sexuels Simultanés
-
 
 ```{r}
 basefr <- basefr %>% 
@@ -499,9 +479,7 @@ basefr <- basefr %>%
 
 ```
 
-
 #### Imputation des valeurs manquantes et recodage
-
 
 ```{r}
 basefr <- basefr %>% 
@@ -601,9 +579,7 @@ basefr <- basefr %>%
 
 ```
 
-
 #### reordonnance des modalités des variables
-
 
 ```{r}
 #| echo: false
@@ -732,9 +708,7 @@ basefr$MV833A <- basefr$MV833A %>%
 
 ```
 
-
 #### Ajout des etiquettes de variables
-
 
 ```{r}
 
@@ -776,9 +750,7 @@ labelled::var_label(basefr) <-list( MCASEID = "identifiant", MV001 = "numero de 
 
 ```
 
-
 #### Suppression des variables à present inutiles et Imputation des valeurs manquantes
-
 
 ```{r}
 # Suppression
@@ -801,17 +773,13 @@ base_NON_NA <- base_NON_NA %>%
 
 ```
 
-
 ![](Rplot03.png)
-
 
 ```{r}
 basefr <-  base_NON_NA
 ```
 
-
 ### [Partie 2 :]{.underline} Analyses univariées
-
 
 ```{r}
 # Visualisation de la classe de chaque variabes du dataframe
@@ -831,9 +799,7 @@ data_uni <-  basefr %>%
   
 ```
 
-
 ![](Rplot04.png)
-
 
 ```{r}
 ggplot(basefr)+
@@ -842,9 +808,7 @@ ggplot(basefr)+
   ggtitle("differents scores d'attitude")
 ```
 
-
 #### vérification de la normalité de la distribution des variables quantitative
-
 
 ```{r}
 #| message: false
@@ -861,9 +825,7 @@ print(ks_results)
 
 ```
 
-
 d'après la p-value donnée par le test de kolmogorov- smirnov, aucune variables quantitative de notre base de données ne suit la distribution normale.
-
 
 ```{r}
 #| message: false
@@ -887,9 +849,7 @@ basefr%>%
    italicize_labels()
 ```
 
-
 ### Partie 4 : Analyse bivariée
-
 
 ```{r}
 #| message: false
@@ -949,9 +909,7 @@ dp%>%
  
 ```
 
-
 ### Partie 4 : Réalisation des objectifs spécifiques
-
 
 ```{r}
 ####definition de l'objet d'enquete
@@ -960,9 +918,7 @@ dp <- svydesign(ids = ~MV021, strata = ~MV023, weights =~poids, data= basefr)
 
 ```
 
-
 #### Objectif specifique 1 : Identifier les facteurs sociodemographiques associés à la décision de se faire dépister
-
 
 ```{r}
 #| message: false
@@ -983,9 +939,7 @@ dp %>%
 
 ```
 
-
 #### Objectif specifique 2 : Evaluer l'impact du niveau de connaissance sur le VIH, des attitudes envers les personnes vivants avec le VIH et des pratiques sexuelles à risque sur la décision de se faire dépister
-
 
 ```{r}
 #| message: false
@@ -1008,11 +962,9 @@ dp %>%
   
 ```
 
-
 #### Objectif specifique 3 : Ressortir les facteurs predictifs du dépistage VIH
 
 ##### recodage des variables et définition des modalité de reférence
-
 
 ```{r}
 #| message: false
@@ -1089,9 +1041,7 @@ tbl_merge(tbls = list(univ_tab, mv_tab),
 
 ```
 
-
 #### Performance du modèle avec la courbe ROC (Receiver Operating Characteristic)
-
 
 ```{r}
 library(pROC)
@@ -1127,6 +1077,4 @@ ggroc(roc_curve, color = "blue", size = 1.5) +
 
 ```
 
-
 L'AUC (Area Under the Curve) de 0,75 indique que le modèle a une bonne capacité de discrimination. Cela signifie que, dans 75 % des cas, le modèle est capable de différencier correctement entre les individus qui se sont fait dépister pour le VIH et ceux qui ne l'ont pas fait.
-
