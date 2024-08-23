@@ -271,17 +271,13 @@ library(naniar) # Chargement du package pour la visualisation graphiques des val
 graph_missing <- gg_miss_var(basefr,
             show_pct = TRUE ## afficher avec les pourcentages
 )
-#graph_missing
+raph_missing
 ```
-
-![](Rplot01.png)
 
 ```{r}
 # Carte thermique de la complétude des données à l'échelle du dataframe
-#vis_miss(basefr,warn_large_data = FALSE)
+vis_miss(basefr,warn_large_data = FALSE)
 ```
-
-![](Rplot02.png)
 
 #### Gestion des valeurs manquantes
 
@@ -769,11 +765,9 @@ base_NON_NA <- base_NON_NA %>%
 ```{r}
 
 # Carte thermique de la complétude des données à l'échelle du dataframe
-#vis_miss(base_NON_NA,warn_large_data = FALSE)
+vis_miss(base_NON_NA,warn_large_data = FALSE)
 
 ```
-
-![](Rplot03.png)
 
 ```{r}
 basefr <-  base_NON_NA
@@ -789,17 +783,15 @@ questionr::look_for(basefr)
 ```{r}
 ## description des differents scores
 data_uni <-  basefr %>% 
-  pivot_longer( cols =  c(score_connaissance_prevention,score_connaissance_transmission,score_connaissance_TME,score_connaissance_information), names_to = "type_score", values_to =  "scores") #reorganisatio du dataframe
+  pivot_longer( cols =  c(score_connaissance_prevention,score_connaissance_transmission,score_connaissance_TME,score_connaissance_information), names_to = "type_score", values_to =  "scores")#reorganisationdu dataframe
 
-#ggplot(data_uni)+
- # aes( x = type_score , y = scores)+
-  #geom_boxplot()+
-  #ggtitle( "differents scores de connaissance")
+ggplot(data_uni)+
+  aes( x = type_score , y = scores)+
+  geom_boxplot()+
+  ggtitle( "differents scores de connaissance")
   
   
 ```
-
-![](Rplot04.png)
 
 ```{r}
 ggplot(basefr)+
